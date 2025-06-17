@@ -111,9 +111,9 @@
     </select>
 
     <label for="level">Level [MAX 10]</label>
-    <input type="number" id="level" placeholder="1" max="10"/>
+    <input type="number" id="level" placeholder="5" max="10"/>
 
-    <label for="description">Card Effect</label>
+    <label for="description">Card Effect/Skill </label>
     <textarea id="description" rows="4" placeholder="eg: if Total Level of 3 card is equal 20, attack +50 "></textarea>
 
     <label for="atk">Attack [MAX 1000 for large Zoids eg:Gojulas Giga/Deathsaurer/Deathstinger] </label>
@@ -164,8 +164,7 @@
         reader.readAsDataURL(file);
       }
     });
-    document.querySelectorAll('input').forEach(el => 
-      {el.addEventListener('input', enforceLimits);});
+    
 
     function moveImage(dx, dy) {
       imgX += dx;
