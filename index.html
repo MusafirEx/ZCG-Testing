@@ -151,9 +151,6 @@
     document.querySelectorAll('input, select, textarea').forEach(el => {
       el.addEventListener('input', generateCard);
     });
-    document.querySelectorAll('input').forEach(el => {
-      el.addEventListener('input', enforceLimits);
-     });
     
     document.getElementById("imageUpload").addEventListener("change", function() {
       const file = this.files[0];
@@ -245,6 +242,11 @@
       ctx.textAlign = "left";
       wrapText(ctx, desc, 30, 470, 300, 10);
     }
+    
+    document.querySelectorAll('input').forEach(el => {
+      el.addEventListener('input', enforceLimits);
+     });
+    
 
     function wrapText(context, text, x, y, maxWidth, lineHeight) {
       const words = text.split(' ');
