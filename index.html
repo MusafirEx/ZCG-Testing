@@ -131,12 +131,7 @@
       <option value="custom">Custom Background</option>
      
     </select>
-
-    <div id="customBackgroundUpload">
-      <label for="bgUpload">Upload Custom Background</label>
-      <input type="file" id="bgUpload" accept="image/*">
-    </div>
-
+      
     <div id="standardBackgroundSelect" style="display:none;">
       <label for="bgSelect">Choose Standard Background</label>
       <select id="bgSelect">
@@ -151,8 +146,12 @@
         <option value="bg9.png">Background 9</option>
         <option value="bg10.png">Background 10</option>
       </select>
-    </div>
 
+    </div>
+ <div id="customBackgroundUpload">
+      <label for="bgUpload">Upload Custom Background</label>
+      <input type="file" id="bgUpload" accept="image/*">
+    </div>
     <label>Image Controls</label>
     <div class="image-controls">
       <button onclick="moveImage(-10, 0)">← Left</button>
@@ -216,8 +215,8 @@
 
     function toggleBackgroundMode() {
       const mode = document.getElementById("bgMode").value;
-      document.getElementById("customBackgroundUpload").style.display = mode === "custom" ? "block" : "none";
       document.getElementById("standardBackgroundSelect").style.display = mode === "standard" ? "block" : "none";
+      document.getElementById("customBackgroundUpload").style.display = mode === "custom" ? "block" : "none";
       generateCard();
     }
 
