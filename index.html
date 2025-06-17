@@ -125,6 +125,33 @@
     <label for="imageUpload">Zoids Image(Transparent background)</label>
     <input type="file" id="imageUpload" accept="image/*" />
 
+    <label for="bgMode">Background Mode</label>
+    <select id="bgMode" onchange="toggleBackgroundMode()">
+      <option value="custom">Custom Background</option>
+      <option value="standard">Standard Background</option>
+    </select>
+
+    <div id="customBackgroundUpload">
+      <label for="bgUpload">Upload Custom Background</label>
+      <input type="file" id="bgUpload" accept="image/*">
+    </div>
+
+    <div id="standardBackgroundSelect" style="display:none;">
+      <label for="bgSelect">Choose Standard Background</label>
+      <select id="bgSelect">
+        <option value="bg1.png">Background 1</option>
+        <option value="bg2.png">Background 2</option>
+        <option value="bg3.png">Background 3</option>
+        <option value="bg4.png">Background 4</option>
+        <option value="bg5.png">Background 5</option>
+        <option value="bg6.png">Background 6</option>
+        <option value="bg7.png">Background 7</option>
+        <option value="bg8.png">Background 8</option>
+        <option value="bg9.png">Background 9</option>
+        <option value="bg10.png">Background 10</option>
+      </select>
+    </div>
+
     <label>Image Controls</label>
     <div class="image-controls">
       <button onclick="moveImage(-10, 0)">← Left</button>
@@ -147,11 +174,12 @@
   <script>
     let imgX = 25, imgY = 100, imgWidth = 300, imgHeight = 200;
     let uploadedImage = null;
+    let backgroundImage = null;
 
     document.querySelectorAll('input, select, textarea').forEach(el => {
       el.addEventListener('input', generateCard);
     });
-    
+
     document.getElementById("imageUpload").addEventListener("change", function() {
       const file = this.files[0];
       if (file) {
@@ -164,7 +192,33 @@
         reader.readAsDataURL(file);
       }
     });
-    
+
+    document.getElementById("bgUpload").addEventListener("change", function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          backgroundImage = new Image();
+          backgroundImage.onload = generateCard;
+          backgroundImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById("bgSelect").addEventListener("change", function() {
+  const selected = this.value;
+  backgroundImage = new Image();
+  backgroundImage.onload = generateCard;
+  backgroundImage.src = "backgrounds/" + selected;
+    });
+
+    function toggleBackgroundMode() {
+      const mode = document.getElementById("bgMode").value;
+      document.getElementById("customBackgroundUpload").style.display = mode === "custom" ? "block" : "none";
+      document.getElementById("standardBackgroundSelect").style.display = mode === "standard" ? "block" : "none";
+      generateCard();
+    }
 
     function moveImage(dx, dy) {
       imgX += dx;
@@ -190,11 +244,16 @@
       const atk = document.getElementById("atk").value;
       const def = document.getElementById("def").value;
 
+      // Draw background if set
+      if (backgroundImage) {
+        ctx.drawImage(backgroundImage, 0, 0, 350, 500);
+      }
+
       let frameSrc = '';
-      if (type === "Zoids") frameSrc = "frame-zoids.png";
-      if (type === "Pilot") frameSrc = "frame-pilot.png";
-      if (type === "Weapons") frameSrc = "frame-weapons.png";
-      if (type === "Organoid") frameSrc = "frame-organoid.png";
+      if (type === "Zoids") frameSrc = "frames/frame-zoids.png";
+      if (type === "Pilot") frameSrc = "frames/frame-pilot.png";
+      if (type === "Weapons") frameSrc = "frames/frame-weapons.png";
+      if (type === "Organoid") frameSrc = "frames/frame-organoid.png";
 
       const frameImg = new Image();
       frameImg.src = frameSrc;
@@ -236,17 +295,12 @@
       ctx.textAlign = "right";
       ctx.fillText(atk, 205, 30);
       ctx.fillText(def, 330, 30);
-    
+
       ctx.font = "italic bold 10px Arial";
       ctx.fillStyle = "#000";
       ctx.textAlign = "left";
       wrapText(ctx, desc, 30, 470, 300, 10);
     }
-    
-    document.querySelectorAll('input').forEach(el => {
-      el.addEventListener('input', enforceLimits);
-     });
-    
 
     function wrapText(context, text, x, y, maxWidth, lineHeight) {
       const words = text.split(' ');
@@ -274,8 +328,7 @@
       link.click();
     }
 
-    function enforceLimits() 
-    {
+    function enforceLimits() {
       const atkInput = document.getElementById("atk");
       if (parseInt(atkInput.value) > 1000) atkInput.value = 1000;
 
@@ -285,7 +338,6 @@
       const levelInput = document.getElementById("level");
       if (parseInt(levelInput.value) > 10) levelInput.value = 10;
     }
-    
   </script>
 
   <script>
