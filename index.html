@@ -149,9 +149,11 @@
     let uploadedImage = null;
 
     document.querySelectorAll('input, select, textarea').forEach(el => {
-      el.addEventListener('input', enforceLimits);
       el.addEventListener('input', generateCard);
     });
+    document.querySelectorAll('input').forEach(el => {
+      el.addEventListener('input', enforceLimits);
+     });
     
     document.getElementById("imageUpload").addEventListener("change", function() {
       const file = this.files[0];
